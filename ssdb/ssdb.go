@@ -213,17 +213,13 @@ func (rc *Cache) StartAndGC(config string) error {
 		if err := rc.connectInit(); err != nil {
 			return err
 		}
-	}
-	if rc.conn != nil {
 		auth := cf["auth"]
-		if len(auth) > 0 {
-			resp,_ := rc.conn.Do("auth", auth)
-			resp_array := strings.Split(resp[0], ":")
-			respinfo := resp_array[0]
-			if respinfo != "ok" {
-				return errors.New("invalid password")
-			}
-		}		
+		resp,_ := rc.conn.Do("auth", auth)
+		resp_array := strings.Split(resp[0], ":")
+		respinfo := resp_array[0]
+		if respinfo != "ok" {
+			return errors.New("invalid password")
+		}
 	}
 	return nil
 }
